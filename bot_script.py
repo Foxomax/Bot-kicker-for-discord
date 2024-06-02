@@ -1,14 +1,22 @@
 import time
-
+import os
 import discord
 
-#region
-my_bot_token = 'your bot token'
-#endregion
+# regionEnvironment Variables
+my_bot_token = os.getenv('hym_token')
+if not my_bot_token:
+    print('error, la variable no se cargo sastifactoriamente')
+
 indecent_words = [
     "Porno", "porno",
     "xxx"
 ]
+user_messages = {}
+TIME_WINDOW = 7
+umbral = 5
+channel_id = 1246638973271670886
+# endregion
+
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -16,15 +24,13 @@ intents.guilds = True
 intents.members = True
 
 client = discord.Client(intents=intents)
-user_messages = {}
-TIME_WINDOW = 7
-umbral = 5
-channel_id = 1246638973271670886
+
 
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user.name} - {client.user.id}')
     print('=-=-=-=-=-=')
+
 
 @client.event
 async def on_message(message):
@@ -61,5 +67,6 @@ async def on_message(message):
             except Exception as e:
                 print(e)
         user_messages[user_id] = []
+
 
 client.run(f'{my_bot_token}')
